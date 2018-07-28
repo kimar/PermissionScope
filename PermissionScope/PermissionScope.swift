@@ -569,7 +569,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     This function is called when we want to show the notifications
     alert, kicking off the entire process.
     */
-    func showingNotificationPermission() {
+    @objc func showingNotificationPermission() {
         let notifCenter = NotificationCenter.default
         
         notifCenter
@@ -596,7 +596,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     See `showingNotificationPermission` for a more detailed description
     of the entire process.
     */
-    func finishedShowingNotificationPermission () {
+    @objc func finishedShowingNotificationPermission () {
         NotificationCenter.default.removeObserver(self,
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
@@ -628,7 +628,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to User Notifications, if necessary.
     */
-    public func requestNotifications() {
+    @objc public func requestNotifications() {
         let status = statusNotifications()
         switch status {
         case .unknown:
@@ -675,7 +675,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to the Microphone, if necessary.
     */
-    public func requestMicrophone() {
+    @objc public func requestMicrophone() {
         let status = statusMicrophone()
         switch status {
         case .unknown:
@@ -699,7 +699,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     - returns: Permission status for the requested type.
     */
     public func statusCamera() -> PermissionStatus {
-        let status = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
         case .authorized:
             return .authorized
@@ -713,11 +713,11 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to the Camera, if necessary.
     */
-    public func requestCamera() {
+    @objc public func requestCamera() {
         let status = statusCamera()
         switch status {
         case .unknown:
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo,
+            AVCaptureDevice.requestAccess(for: .video,
                 completionHandler: { granted in
                     self.detectAndCallback()
             })
@@ -752,7 +752,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to Photos, if necessary.
     */
-    public func requestPhotos() {
+    @objc public func requestPhotos() {
         let status = statusPhotos()
         switch status {
         case .unknown:
@@ -775,7 +775,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     
     - returns: Permission status for the requested type.
     */
-    public func statusReminders() -> PermissionStatus {
+    @objc public func statusReminders() -> PermissionStatus {
         let status = EKEventStore.authorizationStatus(for: .reminder)
         switch status {
         case .authorized:
@@ -790,7 +790,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to Reminders, if necessary.
     */
-    public func requestReminders() {
+    @objc public func requestReminders() {
         let status = statusReminders()
         switch status {
         case .unknown:
@@ -827,7 +827,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to Events, if necessary.
     */
-    public func requestEvents() {
+    @objc public func requestEvents() {
         let status = statusEvents()
         switch status {
         case .unknown:
@@ -888,7 +888,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to Bluetooth, if necessary.
     */
-    public func requestBluetooth() {
+    @objc public func requestBluetooth() {
         let status = statusBluetooth()
         switch status {
         case .disabled:
@@ -933,7 +933,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Requests access to Core Motion Activity, if necessary.
     */
-    public func requestMotion() {
+    @objc public func requestMotion() {
         let status = statusMotion()
         switch status {
         case .unauthorized:
@@ -1119,7 +1119,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     /**
     Called when the users taps on the close button.
     */
-    func cancel() {
+    @objc func cancel() {
         self.hide()
         
         if let onCancel = onCancel {
@@ -1205,7 +1205,7 @@ typealias resultsForConfigClosure     = ([PermissionResult]) -> Void
     button to check on a disabled permission. It calls detectAndCallback
     to recheck all the permissions and update the UI.
     */
-    func appForegroundedAfterSettings() {
+    @objc func appForegroundedAfterSettings() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         detectAndCallback()
